@@ -2,10 +2,11 @@ import streamlit as st
 import numpy as np
 import joblib
 
+# Load model & scaler
 model = joblib.load('model.pkl')
-scaler = joblib.load('scaler.pkl')
+scaler = joblib.load('scaler.pkl')  # Bisa ColumnTransformer atau Pipeline
 
-st.title("Prediksi Heart Failure 🫀")
+st.title("Prediksi Heart Failure")
 
 with st.form("form_hf"):
     age        = st.number_input('Age', min_value=40, max_value=95, value=60)
@@ -17,10 +18,17 @@ with st.form("form_hf"):
     submit     = st.form_submit_button("Prediksi")
 
 if submit:
+    # Susun input ke array
     X = np.array([[age, anaemia, high_bp, creatinine, ejection, platelets]])
-    Xs = scaler.transform(X)
-    pred = model.predict(Xs)[0]
-    if pred == 1:
+
+    # Transformasi input pakai scaler (ColumnTransformer)
+    X_transformed = scaler.transform(X)
+
+    # Prediksi
+    prediction = model.predict(X_transformed)[0]
+
+    # Output
+    if prediction == 1:
         st.error("Hasil: Risiko Heart Failure tinggi")
     else:
         st.success("Hasil: Risiko Heart Failure rendah")
