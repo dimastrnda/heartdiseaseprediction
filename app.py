@@ -2,8 +2,8 @@ import streamlit as st
 import numpy as np
 import joblib
 
-model = joblib.load('hf_model.pkl')
-scaler = joblib.load('hf_scaler.pkl')
+model = joblib.load('model.pkl')
+scaler = joblib.load('scaler.pkl')
 
 st.title("Prediksi Heart Failure 🫀")
 
